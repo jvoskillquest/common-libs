@@ -10,12 +10,11 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-      runs-on: ubuntu-latest
-      strategy:
-          matrix:
-              node-version: [16.x]
-              aws-region: [us-west-1]
-              aws-env: [dev]
+    strategy:
+        matrix:
+            node-version: [16.x]
+            aws-region: [us-west-1]
+            aws-env: [dev]
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
