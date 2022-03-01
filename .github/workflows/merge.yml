@@ -13,7 +13,7 @@ jobs:
     strategy:
         matrix:
             node-version: [16.x]
-            aws-region: [us-west-1]
+            aws-region: [us-east-1]
             aws-env: [dev]
     steps:
       - name: Configure AWS Credentials
