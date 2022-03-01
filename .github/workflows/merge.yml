@@ -1,0 +1,38 @@
+name: merge
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '!**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+      runs-on: ubuntu-latest
+      strategy:
+          matrix:
+              node-version: [16.x]
+              aws-region: [us-west-1]
+              aws-env: [dev]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ matrix.aws-region }}
+      - name: Login to CodeArtifact
+        run: aws codeartifact login --tool npm --domain skillquest --repository academy
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Publish
+        run: |
+          npx can-npm-publish --verbose && npm publish || echo "Will not publish"
